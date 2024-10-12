@@ -19,32 +19,25 @@ const EmailBody = () => {
 
   const formattedDate = useFormatDate(email?.date);
   return (
-    <div className="card p-3 d-flex">
+    <article className="card p-3 d-flex">
       <div className="row w-100">
-        <div className="col-auto d-flex ">
+        <div className="col-auto d-flex">
           <div
-            className="text-white rounded-circle me-3"
-            style={{
-              width: "50px",
-              height: "50px",
-              fontSize: "20px",
-              fontWeight: "bold",
-              backgroundColor: "#E54065",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
+            className="text-white avatar rounded-circle me-3"
+            aria-label="Sender Initial"
           >
             {email.from.name.charAt(0).toUpperCase()}
           </div>
         </div>
         <div className="col">
-          <div className="d-flex align-items-center mb-3 justify-content-between">
+          <header className="d-flex align-items-center mb-3 justify-content-between">
             <div>
-              <h5 className="display-6">
+              <h1 className="display-6">
                 <strong>{email?.subject}</strong>
-              </h5>
-              <span className="text-secondary">{formattedDate}</span>
+              </h1>
+              <time className="text-secondary" dateTime={formattedDate}>
+                {formattedDate}
+              </time>
             </div>
 
             <button
@@ -53,14 +46,17 @@ const EmailBody = () => {
               }}
               className="btn btn-danger rounded-pill text-white ms-3"
               style={{ fontWeight: "bold" }}
+              aria-label={
+                email.isFavorite ? "Remove from Favorite" : "Mark as Favorite"
+              }
             >
               {email.isFavorite ? "Remove from Favorite" : "Mark as Favorite"}
             </button>
-          </div>
-          <div dangerouslySetInnerHTML={{ __html: emailBody?.body }} />
+          </header>
+          <section dangerouslySetInnerHTML={{ __html: emailBody?.body }} />
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

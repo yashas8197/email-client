@@ -14,13 +14,16 @@ const ListPage = ({ setCurrentPage, currentPage, totalPages, emails }) => {
   };
 
   return (
-    <>
+    <section>
       <div>
         <div>
           {emails.map((email) => (
             <EmailCard key={email.id} email={email} />
           ))}
-          <div className="pagination d-flex justify-content-center my-5">
+          <nav
+            aria-label="Pagination"
+            className="pagination d-flex justify-content-center my-5"
+          >
             <button
               onClick={handlePreviousPage}
               disabled={currentPage === 1}
@@ -40,10 +43,10 @@ const ListPage = ({ setCurrentPage, currentPage, totalPages, emails }) => {
             >
               Next
             </button>
-          </div>
+          </nav>
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
