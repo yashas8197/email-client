@@ -6,11 +6,12 @@ import FilterHeader from "./components/FilterHeader";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmails, resetEmailBody } from "./utils/emailSlice";
+import { useFilter } from "./utils/useFilter";
 
 function App() {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(2);
+  const totalPages = 2;
   const [activeFilter, setActiveFilter] = useState("");
 
   const [showEmailBody, setShowEmailBody] = useState(false);
@@ -36,26 +37,7 @@ function App() {
     setActiveFilter(filter);
   };
 
-  const filteredList = () => {
-    const favoriteEmails =
-      JSON.parse(localStorage.getItem("favoriteEmails")) || [];
-    const readEmails = JSON.parse(localStorage.getItem("readEmails")) || [];
-
-    if (activeFilter === "Favorites") {
-      return favoriteEmails.length
-        ? favoriteEmails
-        : emailList.filter((email) => email.isFavorite);
-    } else if (activeFilter === "Read") {
-      return readEmails.length
-        ? readEmails
-        : emailList.filter((email) => email.isRead);
-    } else if (activeFilter === "Unread") {
-      const readEmailIds = readEmails.map((email) => email.id);
-      return emailList.filter((email) => !readEmailIds.includes(email.id));
-    }
-
-    return emailList;
-  };
+  const filteredList = useFilter(emailList, activeFilter);
 
   return (
     <>
@@ -70,7 +52,7 @@ function App() {
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
               totalPages={totalPages}
-              emails={filteredList()}
+              emails={filteredList}
             />
           </div>
           {showEmailBody && (
