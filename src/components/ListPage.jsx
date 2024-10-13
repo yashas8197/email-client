@@ -1,6 +1,12 @@
 import EmailCard from "./EmailCard";
 
-const ListPage = ({ setCurrentPage, currentPage, totalPages, emails }) => {
+const ListPage = ({
+  setCurrentPage,
+  currentPage,
+  totalPages,
+  emails,
+  activeFilter,
+}) => {
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -17,33 +23,39 @@ const ListPage = ({ setCurrentPage, currentPage, totalPages, emails }) => {
     <section>
       <div>
         <div>
-          {emails.map((email) => (
-            <EmailCard key={email.id} email={email} />
-          ))}
-          <nav
-            aria-label="Pagination"
-            className="pagination d-flex justify-content-center my-5"
-          >
-            <button
-              onClick={handlePreviousPage}
-              disabled={currentPage === 1}
-              className="btn btn-danger rounded-pill text-white ms-3"
-              style={{ fontWeight: "bold" }}
+          {emails.length > 0 ? (
+            emails.map((email) => <EmailCard key={email.id} email={email} />)
+          ) : (
+            <p className="display-5 text-center">{`No Emails  ${
+              activeFilter ? "in " + activeFilter : ""
+            }`}</p>
+          )}
+          {activeFilter === "Unread" && (
+            <nav
+              aria-label="Pagination"
+              className="pagination d-flex justify-content-center my-5"
             >
-              Previous
-            </button>
-            <span className="mx-2">
-              Page {currentPage} of {totalPages}
-            </span>
-            <button
-              className="btn btn-danger rounded-pill text-white ms-3"
-              style={{ fontWeight: "bold" }}
-              onClick={handleNextPage}
-              disabled={currentPage === totalPages}
-            >
-              Next
-            </button>
-          </nav>
+              <button
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className="btn btn-danger rounded-pill text-white ms-3"
+                style={{ fontWeight: "bold" }}
+              >
+                Previous
+              </button>
+              <span className="mx-2">
+                Page {currentPage} of {totalPages}
+              </span>
+              <button
+                className="btn btn-danger rounded-pill text-white ms-3"
+                style={{ fontWeight: "bold" }}
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </nav>
+          )}
         </div>
       </div>
     </section>

@@ -53,6 +53,7 @@ function App() {
               currentPage={currentPage}
               totalPages={totalPages}
               emails={filteredList}
+              activeFilter={activeFilter}
             />
           </div>
           {showEmailBody && (

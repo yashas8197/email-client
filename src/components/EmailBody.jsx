@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import useFormatDate from "../utils/useFormatDate";
 import Shimmer from "./Shimmer";
-import { toggleFavorite } from "../utils/emailSlice";
+import { resetEmailBody, toggleFavorite } from "../utils/emailSlice";
 
 const EmailBody = () => {
   const dispatch = useDispatch();
@@ -13,13 +13,24 @@ const EmailBody = () => {
     return <Shimmer />;
   }
 
-  const email = emailList?.find((email) => email?.id === emailBody?.id);
+  const email =
+    JSON.parse(localStorage.getItem("favoriteEmails"))?.find(
+      (email) => email?.id === emailBody?.id
+    ) || emailList?.find((email) => email?.id === emailBody?.id);
+  console.log(email);
 
   if (!email) return;
 
   const formattedDate = useFormatDate(email?.date);
   return (
-    <article className="card p-3 d-flex">
+    <article className="card p-3 d-flex position-relative">
+      <span
+        className="position-absolute top-0 end-0 px-2"
+        style={{ cursor: "pointer" }}
+        onClick={() => dispatch(resetEmailBody())}
+      >
+        X
+      </span>
       <div className="row w-100">
         <div className="col-auto d-flex">
           <div
@@ -47,7 +58,9 @@ const EmailBody = () => {
               className="btn btn-danger rounded-pill text-white ms-3"
               style={{ fontWeight: "bold" }}
               aria-label={
-                email.isFavorite ? "Remove from Favorite" : "Mark as Favorite"
+                email.isFavorite === true
+                  ? "Remove from Favorite"
+                  : "Mark as Favorite"
               }
             >
               {email.isFavorite ? "Remove from Favorite" : "Mark as Favorite"}
