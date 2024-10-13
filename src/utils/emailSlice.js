@@ -57,18 +57,46 @@ const emailSlice = createSlice({
     },
     toggleFavorite: (state, action) => {
       const emailId = action.payload;
-      const email = state.emailList.find((email) => email.id == emailId);
+      const email = state.emailList.find((email) => email.id === emailId);
 
       if (email) {
         email.isFavorite = !email.isFavorite;
+
+        let favoriteEmails =
+          JSON.parse(localStorage.getItem("favoriteEmails")) || [];
+
+        if (email.isFavorite) {
+          const isAlreadyFavorite = favoriteEmails.some(
+            (fav) => fav.id === emailId
+          );
+          if (!isAlreadyFavorite) {
+            favoriteEmails.push(email);
+          }
+        } else {
+          favoriteEmails = favoriteEmails.filter((fav) => fav.id !== emailId);
+        }
+
+        localStorage.setItem("favoriteEmails", JSON.stringify(favoriteEmails));
       }
     },
+
     toggleRead: (state, action) => {
       const emailId = action.payload;
-      const email = state.emailList.find((email) => email.id == emailId);
+      const email = state.emailList.find((email) => email.id === emailId);
 
       if (email) {
-        email.isRead = !email.isRead;
+        let readEmails = JSON.parse(localStorage.getItem("readEmails")) || [];
+
+        const isAlreadyRead = readEmails.some(
+          (readEmail) => readEmail.id === emailId
+        );
+
+        if (!isAlreadyRead) {
+          email.isRead = true;
+          readEmails.push(email);
+
+          localStorage.setItem("readEmails", JSON.stringify(readEmails));
+        }
       }
     },
   },

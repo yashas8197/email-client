@@ -15,12 +15,11 @@ function App() {
 
   const [showEmailBody, setShowEmailBody] = useState(false);
   const { emailList, emailBody } = useSelector((state) => state.emailBody);
-  const { emails, setEmails } = useState([]);
 
   useEffect(() => {
     dispatch(fetchEmails(currentPage));
     window.scroll(0, 0);
-  }, [currentPage]);
+  }, [currentPage, activeFilter]);
 
   const email = emailList.find((email) => email?.id === emailBody?.id);
 
@@ -38,18 +37,25 @@ function App() {
   };
 
   const filteredList = () => {
+    const favoriteEmails =
+      JSON.parse(localStorage.getItem("favoriteEmails")) || [];
+    const readEmails = JSON.parse(localStorage.getItem("readEmails")) || [];
+
     if (activeFilter === "Favorites") {
-      return emailList.filter((email) => email.isFavorite);
+      return favoriteEmails.length
+        ? favoriteEmails
+        : emailList.filter((email) => email.isFavorite);
     } else if (activeFilter === "Read") {
-      return emailList.filter((email) => email.isRead);
+      return readEmails.length
+        ? readEmails
+        : emailList.filter((email) => email.isRead);
     } else if (activeFilter === "Unread") {
-      return emailList.filter((email) => !email.isRead);
+      const readEmailIds = readEmails.map((email) => email.id);
+      return emailList.filter((email) => !readEmailIds.includes(email.id));
     }
 
     return emailList;
   };
-
-  // console.log(emailList);
 
   return (
     <>

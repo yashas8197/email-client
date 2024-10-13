@@ -16,7 +16,9 @@ const EmailCard = ({ email }) => {
   return (
     <>
       <article
-        className="card p-3 my-3"
+        className={`card p-3 my-3 ${email.isRead && "read-bg"} ${
+          emailBody?.id === email?.id && "active-ring"
+        }`}
         onClick={() => getEmailBody(email.id)}
         style={{ cursor: "pointer" }}
       >
