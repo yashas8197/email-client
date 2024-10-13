@@ -30,7 +30,7 @@ const ListPage = ({
               activeFilter ? "in " + activeFilter : ""
             }`}</p>
           )}
-          {activeFilter === "Unread" && (
+          {activeFilter !== "Read" && activeFilter !== "Favorites" && (
             <nav
               aria-label="Pagination"
               className="pagination d-flex justify-content-center my-5"
