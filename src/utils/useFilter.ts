@@ -1,7 +1,15 @@
-export const useFilter = (emailList, activeFilter) => {
-  const favoriteEmails =
-    JSON.parse(localStorage.getItem("favoriteEmails")) || [];
-  const readEmails = JSON.parse(localStorage.getItem("readEmails")) || [];
+import { Email } from "../types";
+
+export const useFilter = (
+  emailList: Email[],
+  activeFilter: string
+): Email[] => {
+  const favoriteEmails: Email[] = JSON.parse(
+    localStorage.getItem("favoriteEmails") || "[]"
+  );
+  const readEmails: Email[] = JSON.parse(
+    localStorage.getItem("readEmails") || "[]"
+  );
 
   if (activeFilter === "Favorites") {
     return favoriteEmails.length

@@ -1,6 +1,16 @@
+import React from "react";
+import { Email } from "../types";
 import EmailCard from "./EmailCard";
 
-const ListPage = ({
+type ListPageProp = {
+  currentPage: number;
+  totalPages: number;
+  emails: Email[];
+  activeFilter: string;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+};
+
+const ListPage: React.FC<ListPageProp> = ({
   setCurrentPage,
   currentPage,
   totalPages,

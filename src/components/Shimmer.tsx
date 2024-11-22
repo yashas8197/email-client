@@ -1,6 +1,6 @@
 import React from "react";
 
-const Shimmer = () => {
+const Shimmer: React.FC = () => {
   return (
     <div className="card p-3 d-flex h-100">
       <div className="row w-100">

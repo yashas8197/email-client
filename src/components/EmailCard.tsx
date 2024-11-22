@@ -1,17 +1,22 @@
 import useFormatDate from "../utils/useFormatDate";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmailBody, toggleRead } from "../utils/emailSlice";
+import { Email } from "../types";
 
-const EmailCard = ({ email }) => {
+interface EmailCardProps {
+  email: Email;
+}
+
+const EmailCard: React.FC<EmailCardProps> = ({ email }) => {
   const { emailBody } = useSelector((state) => state.emailBody);
   const dispatch = useDispatch();
 
-  const getEmailBody = async (id) => {
+  const getEmailBody = async (id: string) => {
     dispatch(fetchEmailBody(id));
     dispatch(toggleRead(id));
   };
 
-  const formattedDate = useFormatDate(email.date);
+  const formattedDate: string = useFormatDate(email.date);
 
   return (
     <>

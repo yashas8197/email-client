@@ -1,25 +1,27 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useFormatDate from "../utils/useFormatDate";
-import Shimmer from "./Shimmer";
 import { resetEmailBody, toggleFavorite } from "../utils/emailSlice";
+import { Email } from "../types";
+import Shimmer from "./Shimmer";
+import { RootState } from "../utils/store";
 
 const EmailBody = () => {
   const dispatch = useDispatch();
   const { emailList, emailBody, loading, error } = useSelector(
-    (state) => state.emailBody
+    (state: RootState) => state.emailBody
   );
 
   if (loading) {
     return <Shimmer />;
   }
 
-  const email =
-    JSON.parse(localStorage.getItem("favoriteEmails"))?.find(
-      (email) => email?.id === emailBody?.id
-    ) || emailList?.find((email) => email?.id === emailBody?.id);
-  console.log(email);
+  const email: Email | undefined =
+    JSON.parse(localStorage.getItem("favoriteEmails") ?? "[]")?.find(
+      (email: Email) => email?.id === emailBody?.id
+    ) || emailList?.find((email: Email) => email?.id === emailBody?.id);
 
-  if (!email) return;
+  if (!email) return null;
 
   const formattedDate = useFormatDate(email?.date);
   return (
@@ -66,7 +68,9 @@ const EmailBody = () => {
               {email.isFavorite ? "Remove from Favorite" : "Mark as Favorite"}
             </button>
           </header>
-          <section dangerouslySetInnerHTML={{ __html: emailBody?.body }} />
+          <section
+            dangerouslySetInnerHTML={{ __html: emailBody?.body || "" }}
+          />
         </div>
       </div>
     </article>

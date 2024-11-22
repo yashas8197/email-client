@@ -1,4 +1,12 @@
-const FilterHeader = ({ activeFilter, handleFilterChange }) => {
+interface FilterHeaderProps {
+  activeFilter: string;
+  handleFilterChange: (filter: string) => void;
+}
+
+const FilterHeader: React.FC<FilterHeaderProps> = ({
+  activeFilter,
+  handleFilterChange,
+}) => {
   return (
     <div>
       <div className="filter container my-4 d-flex align-items-center">
@@ -6,7 +14,7 @@ const FilterHeader = ({ activeFilter, handleFilterChange }) => {
           <strong>Filter By:</strong>
         </p>
         <div className="mx-5 row">
-          {["Unread", "Read", "Favorites"].map((filter) => (
+          {["Unread", "Read", "Favorites"].map((filter: string) => (
             <span
               key={filter}
               className={`col px-2 ${activeFilter === filter ? "active" : ""}`}

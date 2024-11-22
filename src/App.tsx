@@ -7,22 +7,26 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmails, resetEmailBody } from "./utils/emailSlice";
 import { useFilter } from "./utils/useFilter";
+import { Email } from "./types";
+import { AppDispatch, RootState } from "./utils/store";
 
-function App() {
-  const dispatch = useDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 2;
-  const [activeFilter, setActiveFilter] = useState("");
+const App: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const totalPages: number = 2;
+  const [activeFilter, setActiveFilter] = useState<string>("");
 
-  const [showEmailBody, setShowEmailBody] = useState(false);
-  const { emailList, emailBody } = useSelector((state) => state.emailBody);
+  const [showEmailBody, setShowEmailBody] = useState<boolean>(false);
+  const { emailList, emailBody } = useSelector(
+    (state: RootState) => state.emailBody
+  );
 
   useEffect(() => {
     dispatch(fetchEmails(currentPage));
     window.scroll(0, 0);
   }, [currentPage, activeFilter]);
 
-  const email = emailList.find((email) => email?.id === emailBody?.id);
+  const email = emailList.find((email: Email) => email?.id === emailBody?.id);
 
   useEffect(() => {
     if (!email) {
@@ -33,11 +37,11 @@ function App() {
     }
   }, [email, emailBody]);
 
-  const handleFilterChange = (filter) => {
+  const handleFilterChange = (filter: string) => {
     setActiveFilter(filter);
   };
 
-  const filteredList = useFilter(emailList, activeFilter);
+  const filteredList: Email[] = useFilter(emailList, activeFilter);
 
   return (
     <>
@@ -65,6 +69,6 @@ function App() {
       </div>
     </>
   );
-}
+};
 
 export default App;
